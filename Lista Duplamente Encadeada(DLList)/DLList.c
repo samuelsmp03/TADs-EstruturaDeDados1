@@ -62,6 +62,7 @@ int dllInsertAsLast(DLList *dl, void *data){
                 if(dl->first == NULL){
                     last = NULL;
                 }else{
+                    last = dl->first;
                     while(last->next != NULL){
                         last = last->next;
                     }
@@ -125,6 +126,28 @@ void *dllRemoveSpec(DLList *dl, void *key,int (*cmp)(void*,void*)){
     }
     return NULL;
 }
+void *dllRemoveAsFirst(DLList *dl){
+    DLnode *cur;
+    void *data;
+    if(dl != NULL){
+        if(dl->first != NULL){
+            cur = dl->first;
+            data = cur->data;
+            if(cur->next != NULL){
+                cur->next->prev = NULL;
+                dl->first = cur->next;
+                free(cur);
+                return data;
+            }else{
+                dl->first = NULL;
+                free(cur);
+                return data;
+            }
+        }
+    }
+    return NULL;
+}
+
 void *dllGetFirst(DLList *dl){
     if(dl != NULL){
         if(dl->first != NULL){
